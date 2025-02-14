@@ -1,18 +1,21 @@
 #!/usr/bin/python3
-"""
-Fetches data from an API
-and returns information about the employee's todo list progress
-"""
+"""moddule"""
 
 import requests
-from sys import argv
+import sys
+
+"""Module"""
 
 if __name__ == '__main__':
-    userId = argv[1]
-    user = f"https://jsonplaceholder.typicode.com/users/{userId}"
-    todo = f"https://jsonplaceholder.typicode.com/todos?userId={userId}"
-    user_info = requests.get(user).json()
-    todos_info = requests.get(todo).json()
+    """IF SCRIPT IS NOT RUN AS MODULE"""
+    employee_id = sys.argv[1]
+    user_url = "https://jsonplaceholder.typicode.com/users/{}" \
+        .format(employee_id)
+    todos_url = "https://jsonplaceholder.typicode.com/users/{}/todos/" \
+        .format(employee_id)
+
+    user_info = requests.get(user_url).json()
+    todos_info = requests.get(todos_url).json()
 
     employee_name = user_info["name"]
     task_completed = list(filter(lambda obj:
@@ -22,4 +25,5 @@ if __name__ == '__main__':
 
     print("Employee {} is done with tasks({}/{}):".
           format(employee_name, number_of_done_tasks, total_number_of_tasks))
+
     [print("\t " + task["title"]) for task in task_completed]
